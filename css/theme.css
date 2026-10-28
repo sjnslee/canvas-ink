@@ -1,0 +1,59 @@
+html.ink-theme {
+    --ink-muted: color-mix(in srgb, var(--ink-text) 65%, var(--ink-background));
+    --ink-border: color-mix(in srgb, var(--ink-text) 16%, var(--ink-background));
+
+    /* canvas reads these brand variables for its own accent and nav colors */
+    --ic-brand-primary: var(--ink-accent) !important;
+    --ic-brand-button--primary-bgd: var(--ink-accent) !important;
+    --ic-link-color: var(--ink-accent) !important;
+    --ic-brand-font-color-dark: var(--ink-text) !important;
+    --ic-brand-global-nav-bgd: var(--ink-nav) !important;
+    --ic-brand-global-nav-ic-icon-svg-fill: var(--ink-text) !important;
+    --ic-brand-global-nav-ic-icon-svg-fill--active: var(--ink-accent) !important;
+    --ic-brand-global-nav-menu-item__text-color: var(--ink-text) !important;
+    --ic-brand-global-nav-menu-item__text-color--active: var(--ink-accent) !important;
+    --ic-brand-global-nav-avatar-border: var(--ink-border) !important;
+}
+
+html.ink-theme,
+html.ink-theme :is(body, #wrapper, #main, #not_right_side, #content-wrapper, #content, #left-side, #right-side-wrapper, .ic-Layout-contentMain, .ic-app-main-content, .ic-Dashboard-header__layout, .ic-app-nav-toggle-and-crumbs, .header-bar) {
+    background-color: var(--ink-background) !important;
+    color: var(--ink-text) !important;
+}
+
+html.ink-theme :is(.ic-DashboardCard, .ic-DashboardCard__header_content, .ig-header, .ig-row, .ic-item-row, .item-group-condensed, .item-group-container, .Day-styles__root, .PlannerHeader-styles__root, .dropdown-menu, .popover, .ui-dialog, .ui-widget-content, .ui-dialog-titlebar, .ui-dialog-buttonpane, .ui-tabs-panel, .module-sequence-footer-content, .ic-notification__content, #calendar-list-holder, #undated-events, .ic-Table, table, th, td, pre, code) {
+    background-color: var(--ink-surface) !important;
+    color: var(--ink-text) !important;
+    border-color: var(--ink-border) !important;
+}
+
+html.ink-theme :is(input, select, textarea, .ic-Input, .btn, .Button) {
+    background-color: var(--ink-surface) !important;
+    color: var(--ink-text) !important;
+    border-color: var(--ink-border) !important;
+}
+
+html.ink-theme :is(.btn-primary, .Button--primary, .ui-button.btn-primary) {
+    background-color: var(--ink-accent) !important;
+    color: var(--ink-background) !important;
+    border-color: var(--ink-accent) !important;
+}
+
+html.ink-theme :is(h1, h2, h3, h4, h5, h6, label, .ic-DashboardCard__header-title, .ig-title, .ellipsible, .page-title, .ic-Dashboard-header__title) {
+    color: var(--ink-text) !important;
+}
+
+html.ink-theme :is(.ic-DashboardCard__header-subtitle, .ic-DashboardCard__header-term, .ig-details, .muted, .text-muted) {
+    color: var(--ink-muted) !important;
+}
+
+html.ink-theme :is(#content, #right-side, .ic-DashboardCard, #breadcrumbs, .ig-row) a:not(.btn, .Button, .ink-task-title) {
+    color: var(--ink-accent) !important;
+}
+
+html.ink-theme :is(hr, .ig-row, .ic-item-row, .item-group-condensed, #breadcrumbs, .ic-app-nav-toggle-and-crumbs) {
+    border-color: var(--ink-border) !important;
+}
+
+html.ink-theme .ic-app-header { background-color: var(--ink-nav) !important; }
+html.ink-theme .ic-DashboardCard { box-shadow: 0 0 0 1px var(--ink-border) !important; }

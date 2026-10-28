@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Canvas Ink",
+  "description": "A quieter Canvas: due dates on cards, a simple to do list, and your own colors and font.",
+  "version": "0.0.1",
+  "action": {
+    "default_popup": "html/popup.html",
+    "default_title": "Canvas Ink"
+  },
+  "options_ui": {
+    "page": "html/popup.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["js/defaults.js", "js/content.js"],
+      "css": ["css/content.css", "css/theme.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": ["storage", "unlimitedStorage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "canvas-ink@sjnslee",
+      "strict_min_version": "128.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
