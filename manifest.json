@@ -19,7 +19,7 @@
       "run_at": "document_start"
     }
   ],
-  "permissions": ["storage", "unlimitedStorage"],
+  "permissions": ["storage"],
   "browser_specific_settings": {
     "gecko": {
       "id": "canvas-ink@sjnslee",

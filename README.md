@@ -10,7 +10,7 @@ Utilities for Canvas.
 - hide clutter
 - settings export
 
-## Local Install
+Local install:
 
 - Chrome: `chrome://extensions` → Developer mode → Load unpacked
 - Firefox: `about:debugging` → This Firefox → Load Temporary Add-on → `manifest.json`

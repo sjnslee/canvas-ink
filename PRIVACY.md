@@ -1,16 +1,12 @@
 # Privacy
 
-Canvas Ink does not collect, send, or sell your data.
+Canvas Ink does not collect, send, or sell data.
 
-- **Settings** are saved with the browser's `storage` API and synced by your
-  browser if you have sync on.
-- **Canvas data.** On Canvas pages, the extension reads your planner items
-  from your school's Canvas API using your existing login, and caches them in
-  local extension storage. Marking an item done writes a planner override back
-  to Canvas. Nothing goes anywhere else.
-- **Fonts.** If you set a custom font, it loads from Google Fonts.
-- **Permissions.** `storage` and `unlimitedStorage` hold settings and the
-  planner cache. The content script matches `https://*/*` because Canvas can
-  run on any domain; it does nothing on pages that aren't Canvas.
+- Settings: saved with the browser `storage` API, synced if browser sync on
+- Canvas data: planner items are read from Canvas API with existing login and cached locally. Mark done writes a planner override
+- Fonts: custom fonts load from Google Fonts
+- Permissions: `storage` holds settings and the planner cache. The content
+  script matches `https://*/*` since Canvas can run on any domain, and does
+  nothing on non-Canvas pages
 
-Uninstalling the extension deletes everything it stored.
+Uninstalling deletes everything stored.
