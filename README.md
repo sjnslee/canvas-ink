@@ -9,13 +9,15 @@ less noisy.
   to mark it done. Choose how many to show, whether to include overdue work,
   and whether to hide finished items.
 - **To do list.** A plain list of what's left, in the dashboard sidebar.
+- **Hidden courses.** Leave a course's work out of cards and the to do list.
 - **Dates.** Month/day or day/month, with optional relative time next to it.
 - **Theme.** Pick your own background, panel, text, accent, and sidebar
   colors, or start from a preset. Each part can be turned off to keep
   Canvas's color for it.
 - **Font.** Use any Google Fonts family across Canvas.
-- **Hide.** Sidebar logo, course card images, page footer, the
-  previous/next bar, and Canvas's own to do and coming up lists.
+- **Hide.** Sidebar logo, course card images, course card icons, page
+  footer, the previous/next bar, global announcements, recent feedback, and
+  Canvas's own to do and coming up lists.
 - **Settings.** Export, import, and reset.
 
 Marking something done uses Canvas's own planner, so it stays in sync with

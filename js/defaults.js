@@ -16,6 +16,11 @@ const DEFAULTS = {
     hide_footer: false,
     hide_sequence_footer: false,
     hide_native_todo: true,
+    hide_recent_feedback: false,
+    hide_card_icons: false,
+    hide_global_announcements: false,
+    // keyed by origin and course id, since ids repeat across schools
+    hidden_courses: {},
 };
 
 const THEME_PRESETS = {

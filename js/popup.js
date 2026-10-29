@@ -2,6 +2,7 @@ const fields = document.querySelectorAll("[data-setting]");
 const colorFields = document.querySelectorAll("[data-color]");
 const partFields = document.querySelectorAll("[data-part]");
 const status = document.getElementById("status");
+const hiddenCourses = document.getElementById("hidden-courses");
 // a file picker steals focus and closes the popup, so importing happens in a tab
 const isPopup = chrome.extension.getViews({ type: "popup" }).includes(window);
 let settings = { ...DEFAULTS };
@@ -22,6 +23,24 @@ function fill() {
     }
     for (const field of colorFields) field.value = settings.theme_colors[field.dataset.color];
     for (const field of partFields) field.checked = settings.theme_parts[field.dataset.part] === true;
+    fillHiddenCourses();
+}
+
+function fillHiddenCourses() {
+    const entries = Object.entries(settings.hidden_courses);
+    document.getElementById("hidden-courses-empty").hidden = entries.length > 0;
+    hiddenCourses.replaceChildren(...entries.map(([key, name]) => {
+        const show = Object.assign(document.createElement("button"), { type: "button", textContent: "Show" });
+        show.addEventListener("click", () => {
+            const { [key]: _, ...rest } = settings.hidden_courses;
+            save({ hidden_courses: rest });
+            fillHiddenCourses();
+        });
+        const label = Object.assign(document.createElement("span"), { textContent: name, title: key });
+        const item = document.createElement("li");
+        item.append(label, show);
+        return item;
+    }));
 }
 
 function save(changes) {

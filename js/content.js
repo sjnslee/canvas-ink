@@ -12,6 +12,9 @@ const classSettings = {
     "ink-hide-footer": "hide_footer",
     "ink-hide-sequence-footer": "hide_sequence_footer",
     "ink-hide-native-todo": "hide_native_todo",
+    "ink-hide-recent-feedback": "hide_recent_feedback",
+    "ink-hide-card-icons": "hide_card_icons",
+    "ink-hide-global-announcements": "hide_global_announcements",
 };
 const themeParts = ["background", "surface", "text", "accent", "nav"];
 
@@ -141,6 +144,14 @@ function isDone(task) {
     return task.isMarkedDone ?? task.isSubmitted;
 }
 
+function isHiddenCourse(courseId) {
+    return `${origin}/${courseId}` in settings.hidden_courses;
+}
+
+function hideCourse(courseId, name) {
+    chrome.storage.sync.set({ hidden_courses: { ...settings.hidden_courses, [`${origin}/${courseId}`]: name } });
+}
+
 function isPast(task) {
     return new Date(task.due) < Date.now();
 }
@@ -183,7 +194,10 @@ function watchDashboard() {
 }
 
 function needsRender() {
-    const isCardMissing = settings.card_assignments && [...document.querySelectorAll(".ic-DashboardCard")].some(card => !card.querySelector(".ink-card"));
+    const isCardMissing = settings.card_assignments && [...document.querySelectorAll(".ic-DashboardCard")].some(card => {
+        const courseId = card.querySelector(".ic-DashboardCard__link")?.href.split("/courses/")[1];
+        return courseId && !isHiddenCourse(courseId) && !card.querySelector(".ink-card");
+    });
     const isTodoMissing = settings.todo && document.querySelector("#right-side") && !document.querySelector(".ink-todo");
     return isCardMissing || isTodoMissing;
 }
@@ -199,12 +213,16 @@ function renderCards() {
 
     for (const card of document.querySelectorAll(".ic-DashboardCard")) {
         const courseId = card.querySelector(".ic-DashboardCard__link")?.href.split("/courses/")[1];
+        if (!courseId || isHiddenCourse(courseId)) continue;
         const visible = tasks
             .filter(task => task.courseId === courseId)
             .filter(task => isDone(task) ? !isPast(task) && !settings.card_hide_done : !isPast(task) || settings.card_show_overdue)
             .slice(0, settings.card_count);
 
-        const section = el("div", { className: "ink-card" }, [el("h3", { className: "ink-card-heading", textContent: "Due" })]);
+        const name = card.querySelector(".ic-DashboardCard__header-title")?.textContent.trim() || `Course ${courseId}`;
+        const hide = el("button", { type: "button", className: "ink-card-hide", textContent: "Hide", title: "Hide this course's work from Canvas Ink" });
+        hide.addEventListener("click", () => hideCourse(courseId, name));
+        const section = el("div", { className: "ink-card" }, [el("div", { className: "ink-card-header" }, [el("h3", { className: "ink-card-heading", textContent: "Due" }), hide])]);
         if (visible.length === 0) section.append(el("p", { className: "ink-empty", textContent: "Nothing due" }));
         for (const task of visible) section.append(taskRow(task, false));
         card.append(section);
@@ -216,7 +234,7 @@ function renderTodo() {
     const sidebar = document.querySelector("#right-side");
     if (!settings.todo || !sidebar) return;
 
-    const visible = tasks.filter(task => !isDone(task)).slice(0, settings.todo_count);
+    const visible = tasks.filter(task => !isDone(task) && !isHiddenCourse(task.courseId)).slice(0, settings.todo_count);
     const section = el("section", { className: "ink-todo" }, [el("h2", { className: "ink-todo-heading", textContent: "To do" })]);
     if (visible.length === 0) section.append(el("p", { className: "ink-empty", textContent: "All caught up" }));
     for (const task of visible) section.append(taskRow(task, true));

@@ -85,5 +85,8 @@ button:hover { border-color: var(--muted); }
 .presets { display: flex; align-items: center; gap: 6px; min-height: 30px; }
 .presets span { margin-right: auto; }
 .actions { display: flex; gap: 6px; }
+#hidden-courses { margin: 0; padding: 0; list-style: none; }
+#hidden-courses li { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px; }
+#hidden-courses span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hint { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
 .hint:empty { display: none; }

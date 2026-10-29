@@ -5,7 +5,11 @@
 }
 
 .ink-card { padding: 10px 16px 12px; border-top: 1px solid var(--ink-line); }
-.ink-card-heading { margin: 0 0 4px; font-size: 13px; font-weight: 700; line-height: 1.4; }
+.ink-card-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+.ink-card-heading { margin: 0; font-size: 13px; font-weight: 700; line-height: 1.4; }
+.ink-card-hide { padding: 0; border: 0; background: none; color: var(--ink-dim); font: inherit; font-size: 12px; cursor: pointer; visibility: hidden; }
+.ink-card:hover .ink-card-hide, .ink-card-hide:focus-visible { visibility: visible; }
+.ink-card-hide:hover { color: inherit; text-decoration: underline; }
 
 .ink-todo { margin-bottom: 24px; }
 .ink-todo-heading { margin: 0; padding-bottom: 6px; border-bottom: 1px solid var(--ink-line); font-size: 1rem; }
@@ -26,6 +30,9 @@
 .ink-hide-course-images .ic-DashboardCard__header_image { background-image: none !important; }
 .ink-hide-footer #footer { display: none !important; }
 .ink-hide-sequence-footer :is(#sequence_footer, .module-sequence-footer) { display: none !important; }
+.ink-hide-recent-feedback #right-side .recent_feedback { display: none !important; }
+.ink-hide-card-icons .ic-DashboardCard__action-container { display: none !important; }
+.ink-hide-global-announcements :is(#announcementWrapper, .account_notification) { display: none !important; }
 .ink-hide-native-todo #right-side :is(.Sidebar__TodoListContainer, .todo-list-header, .to-do-list, .events_list.coming_up) { display: none !important; }
 
 /* icon fonts are set on classes starting with icon-, so those keep theirs */
