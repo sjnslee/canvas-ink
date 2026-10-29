@@ -9,11 +9,13 @@ const DEFAULTS = {
     relative_dates: false,
     theme: false,
     theme_colors: { background: "#1c1c1e", surface: "#26262a", text: "#e4e4e7", accent: "#7aa2f7", nav: "#151517" },
+    theme_parts: { background: true, surface: true, text: true, accent: true, nav: true },
     font: "",
     hide_logo: false,
     hide_course_images: false,
     hide_footer: false,
     hide_sequence_footer: false,
+    hide_native_todo: true,
 };
 
 const THEME_PRESETS = {
@@ -23,5 +25,11 @@ const THEME_PRESETS = {
 };
 
 function loadSettings() {
-    return chrome.storage.sync.get(null).then(stored => ({ ...DEFAULTS, ...stored }));
+    // nested objects merge too, so parts added later get their defaults
+    return chrome.storage.sync.get(null).then(stored => ({
+        ...DEFAULTS,
+        ...stored,
+        theme_colors: { ...DEFAULTS.theme_colors, ...stored.theme_colors },
+        theme_parts: { ...DEFAULTS.theme_parts, ...stored.theme_parts },
+    }));
 }

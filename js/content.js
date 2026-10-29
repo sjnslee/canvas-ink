@@ -7,12 +7,13 @@ const day = 86400000;
 const pageFetch = globalThis.content?.fetch ? (...args) => globalThis.content.fetch(...args) : fetch;
 
 const classSettings = {
-    "ink-theme": "theme",
     "ink-hide-logo": "hide_logo",
     "ink-hide-course-images": "hide_course_images",
     "ink-hide-footer": "hide_footer",
     "ink-hide-sequence-footer": "hide_sequence_footer",
+    "ink-hide-native-todo": "hide_native_todo",
 };
+const themeParts = ["background", "surface", "text", "accent", "nav"];
 
 let settings = { ...DEFAULTS };
 let tasks = [];
@@ -53,17 +54,22 @@ function handleStorageChange(changes, area) {
 function applyStyles() {
     const root = document.documentElement;
     for (const [className, key] of Object.entries(classSettings)) root.classList.toggle(className, settings[key] === true);
-    root.classList.toggle("ink-todo-enabled", isDashboard && settings.todo === true);
+    for (const part of themeParts) root.classList.toggle(`ink-theme-${part}`, settings.theme && settings.theme_parts[part] === true);
 
-    for (const [name, value] of Object.entries(settings.theme_colors)) root.style.setProperty(`--ink-${name}`, value);
-    root.style.colorScheme = settings.theme ? (isDarkColor(settings.theme_colors.background) ? "dark" : "light") : "";
+    const colors = settings.theme_colors;
+    for (const [name, value] of Object.entries(colors)) root.style.setProperty(`--ink-${name}`, value);
+    // text on the nav and accent follows their own lightness, not the page text color
+    root.style.setProperty("--ink-nav-text", isDarkColor(colors.nav) ? "#f2f2f2" : "#1f1f1f");
+    root.style.setProperty("--ink-accent-text", isDarkColor(colors.accent) ? "#ffffff" : "#1f1f1f");
+    const isBackgroundThemed = settings.theme && settings.theme_parts.background;
+    root.style.colorScheme = isBackgroundThemed ? (isDarkColor(colors.background) ? "dark" : "light") : "";
 
     applyFont(settings.font.trim());
 }
 
 function removeStyles() {
     const root = document.documentElement;
-    root.classList.remove(...Object.keys(classSettings), "ink-todo-enabled", "ink-font");
+    root.classList.remove(...Object.keys(classSettings), ...themeParts.map(part => `ink-theme-${part}`), "ink-font");
     root.style.colorScheme = "";
     document.getElementById("ink-font")?.remove();
 }
@@ -228,7 +234,7 @@ function taskRow(task, isDetailed) {
 
     const title = el("a", { className: "ink-task-title", href: task.url, textContent: task.title });
     const meta = el("span", { className: "ink-task-meta", textContent: formatDue(task, isDetailed) });
-    if (row.classList.contains("is-overdue")) meta.title = "Overdue";
+    meta.title = (row.classList.contains("is-overdue") ? "Overdue, due " : "Due ") + new Date(task.due).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
     row.append(check, isDetailed ? el("div", { className: "ink-task-body" }, [title, meta]) : title);
     if (!isDetailed) row.append(meta);
     return row;
@@ -243,15 +249,16 @@ function formatDue(task, isDetailed) {
         parts.unshift(task.course);
     }
     if (isDetailed && !isDone(task) && isPast(task)) parts.push("Overdue");
-    if (settings.relative_dates) parts.push(relativeTime(date));
-    return parts.filter(Boolean).join(" · ");
+    const text = parts.filter(Boolean).join(" · ");
+    return settings.relative_dates ? `${text} (${relativeTime(date)})` : text;
 }
 
+// kept short since it sits beside the date; past times are already marked overdue or done
 function relativeTime(date) {
     const minutes = Math.round((date - Date.now()) / 60000);
     const size = Math.abs(minutes);
     const amount = size < 60 ? `${size}m` : size < 1440 ? `${Math.round(size / 60)}h` : `${Math.round(size / 1440)}d`;
-    return minutes < 0 ? `${amount} ago` : `in ${amount}`;
+    return minutes < 0 ? `-${amount}` : amount;
 }
 
 function el(tag, props = {}, children = []) {

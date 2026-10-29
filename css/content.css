@@ -26,7 +26,7 @@
 .ink-hide-course-images .ic-DashboardCard__header_image { background-image: none !important; }
 .ink-hide-footer #footer { display: none !important; }
 .ink-hide-sequence-footer :is(#sequence_footer, .module-sequence-footer) { display: none !important; }
-.ink-todo-enabled #right-side :is(.Sidebar__TodoListContainer, .events_list.coming_up) { display: none !important; }
+.ink-hide-native-todo #right-side :is(.Sidebar__TodoListContainer, .todo-list-header, .to-do-list, .events_list.coming_up) { display: none !important; }
 
 /* icon fonts are set on classes starting with icon-, so those keep theirs */
 .ink-font body,

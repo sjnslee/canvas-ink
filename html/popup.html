@@ -1,85 +1,153 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Canvas Ink</title>
-    <link rel="stylesheet" href="../css/popup.css">
-</head>
+    <link rel="stylesheet" href="../css/popup.css" />
+  </head>
 
-<body>
+  <body>
     <header>
-        <h1>Canvas Ink</h1>
+      <h1>Canvas Ink</h1>
     </header>
 
     <section>
-        <h2>Cards</h2>
-        <label class="check"><input type="checkbox" data-setting="card_assignments"> Show assignments on cards</label>
-        <label class="field">Assignments per card <input type="number" data-setting="card_count" min="1" max="20"></label>
-        <label class="check"><input type="checkbox" data-setting="card_show_overdue"> Include overdue</label>
-        <label class="check"><input type="checkbox" data-setting="card_hide_done"> Hide done</label>
+      <h2>Cards</h2>
+      <label class="check"
+        ><input type="checkbox" data-setting="card_assignments" /> Show
+        assignments on cards</label
+      >
+      <label class="field"
+        >Max assignments per card
+        <input type="number" data-setting="card_count" min="1" max="20"
+      /></label>
+      <label class="check"
+        ><input type="checkbox" data-setting="card_show_overdue" /> Include
+        overdue</label
+      >
+      <label class="check"
+        ><input type="checkbox" data-setting="card_hide_done" /> Hide
+        done</label
+      >
     </section>
 
     <section>
-        <h2>To do</h2>
-        <label class="check"><input type="checkbox" data-setting="todo"> Show to do list on dashboard</label>
-        <label class="field">Items <input type="number" data-setting="todo_count" min="1" max="50"></label>
+      <h2>To do</h2>
+      <label class="check"
+        ><input type="checkbox" data-setting="todo" /> Show to do list on
+        dashboard</label
+      >
+      <label class="field"
+        >Max items
+        <input type="number" data-setting="todo_count" min="1" max="50"
+      /></label>
     </section>
 
     <section>
-        <h2>Dates</h2>
-        <label class="field">Format
-            <select data-setting="date_format">
-                <option value="md">Month/day</option>
-                <option value="dm">Day/month</option>
-            </select>
-        </label>
-        <label class="check"><input type="checkbox" data-setting="relative_dates"> Add relative time, like "in 2d"</label>
+      <h2>Dates</h2>
+      <label class="field"
+        >Format
+        <select data-setting="date_format">
+          <option value="md">Month/day</option>
+          <option value="dm">Day/month</option>
+        </select>
+      </label>
+      <label class="check"
+        ><input type="checkbox" data-setting="relative_dates" /> Add relative
+        time</label
+      >
     </section>
 
     <section>
-        <h2>Theme</h2>
-        <label class="check"><input type="checkbox" data-setting="theme"> Use custom colors</label>
-        <div class="presets">
-            <span>Presets</span>
-            <button type="button" data-preset="dark">Dark</button>
-            <button type="button" data-preset="light">Light</button>
-            <button type="button" data-preset="paper">Paper</button>
-        </div>
-        <label class="field">Background <input type="color" data-color="background"></label>
-        <label class="field">Surface <input type="color" data-color="surface"></label>
-        <label class="field">Text <input type="color" data-color="text"></label>
-        <label class="field">Accent <input type="color" data-color="accent"></label>
-        <label class="field">Sidebar <input type="color" data-color="nav"></label>
+      <h2>Theme</h2>
+      <label class="check"
+        ><input type="checkbox" data-setting="theme" /> Use custom colors</label
+      >
+      <div class="presets">
+        <span>Presets</span>
+        <button type="button" data-preset="dark">Dark</button>
+        <button type="button" data-preset="light">Light</button>
+        <button type="button" data-preset="paper">Paper</button>
+      </div>
+      <div class="color">
+        <label class="check"
+          ><input type="checkbox" data-part="background" /> Background</label
+        ><input
+          type="color"
+          data-color="background"
+          aria-label="Background color"
+        />
+      </div>
+      <div class="color">
+        <label class="check"
+          ><input type="checkbox" data-part="surface" /> Panels and cards</label
+        ><input type="color" data-color="surface" aria-label="Panel color" />
+      </div>
+      <div class="color">
+        <label class="check"
+          ><input type="checkbox" data-part="text" /> Text</label
+        ><input type="color" data-color="text" aria-label="Text color" />
+      </div>
+      <div class="color">
+        <label class="check"
+          ><input type="checkbox" data-part="accent" /> Links and buttons</label
+        ><input type="color" data-color="accent" aria-label="Accent color" />
+      </div>
+      <div class="color">
+        <label class="check"
+          ><input type="checkbox" data-part="nav" /> Sidebar</label
+        ><input type="color" data-color="nav" aria-label="Sidebar color" />
+      </div>
+      <p class="hint">Unchecked parts keep Canvas colors.</p>
     </section>
 
     <section>
-        <h2>Font</h2>
-        <label class="field">Name <input type="text" data-setting="font" placeholder="Canvas default" spellcheck="false"></label>
-        <p class="hint">Any family from Google Fonts, like Inter or Lora.</p>
+      <h2>Font</h2>
+      <label class="field"
+        >Name
+        <input
+          type="text"
+          data-setting="font"
+          placeholder="Canvas default"
+          spellcheck="false"
+      /></label>
+      <p class="hint">Any family from Google Fonts, like Inter or Lora.</p>
     </section>
 
     <section>
-        <h2>Hide</h2>
-        <label class="check"><input type="checkbox" data-setting="hide_logo"> Sidebar logo</label>
-        <label class="check"><input type="checkbox" data-setting="hide_course_images"> Course card images</label>
-        <label class="check"><input type="checkbox" data-setting="hide_footer"> Page footer</label>
-        <label class="check"><input type="checkbox" data-setting="hide_sequence_footer"> Previous and next buttons</label>
+      <h2>Hide</h2>
+      <label class="check"
+        ><input type="checkbox" data-setting="hide_logo" /> Sidebar logo</label
+      >
+      <label class="check"
+        ><input type="checkbox" data-setting="hide_course_images" /> Course card
+        images</label
+      >
+      <label class="check"
+        ><input type="checkbox" data-setting="hide_footer" /> Page footer</label
+      >
+      <label class="check"
+        ><input type="checkbox" data-setting="hide_sequence_footer" /> Previous
+        and next buttons</label
+      >
+      <label class="check"
+        ><input type="checkbox" data-setting="hide_native_todo" /> Canvas to do
+        and coming up</label
+      >
     </section>
 
     <section>
-        <h2>Settings</h2>
-        <div class="actions">
-            <button type="button" id="export">Export</button>
-            <button type="button" id="import">Import</button>
-            <button type="button" id="reset">Reset</button>
-            <input type="file" id="import-file" accept="application/json" hidden>
-        </div>
-        <p class="hint" id="status" role="status"></p>
+      <h2>Settings</h2>
+      <div class="actions">
+        <button type="button" id="export">Export</button>
+        <button type="button" id="import">Import</button>
+        <button type="button" id="reset">Reset</button>
+        <input type="file" id="import-file" accept="application/json" hidden />
+      </div>
+      <p class="hint" id="status" role="status"></p>
     </section>
 
     <script src="../js/defaults.js"></script>
     <script src="../js/popup.js"></script>
-</body>
-
+  </body>
 </html>

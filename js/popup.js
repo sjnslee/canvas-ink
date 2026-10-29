@@ -1,5 +1,6 @@
 const fields = document.querySelectorAll("[data-setting]");
 const colorFields = document.querySelectorAll("[data-color]");
+const partFields = document.querySelectorAll("[data-part]");
 const status = document.getElementById("status");
 // a file picker steals focus and closes the popup, so importing happens in a tab
 const isPopup = chrome.extension.getViews({ type: "popup" }).includes(window);
@@ -20,6 +21,7 @@ function fill() {
         else field.value = value;
     }
     for (const field of colorFields) field.value = settings.theme_colors[field.dataset.color];
+    for (const field of partFields) field.checked = settings.theme_parts[field.dataset.part] === true;
 }
 
 function save(changes) {
@@ -53,6 +55,10 @@ for (const field of colorFields) {
     });
 }
 
+for (const field of partFields) {
+    field.addEventListener("change", () => save({ theme_parts: { ...settings.theme_parts, [field.dataset.part]: field.checked } }));
+}
+
 for (const button of document.querySelectorAll("[data-preset]")) {
     button.addEventListener("click", () => {
         save({ theme: true, theme_colors: { ...THEME_PRESETS[button.dataset.preset] } });
@@ -80,6 +86,7 @@ document.getElementById("import-file").addEventListener("change", async event =>
         // only known keys with matching types make it into storage
         const changes = Object.fromEntries(Object.entries(imported).filter(([key, value]) => key in DEFAULTS && typeof value === typeof DEFAULTS[key]));
         if (changes.theme_colors) changes.theme_colors = { ...DEFAULTS.theme_colors, ...changes.theme_colors };
+        if (changes.theme_parts) changes.theme_parts = { ...DEFAULTS.theme_parts, ...changes.theme_parts };
         save(changes);
         fill();
         status.textContent = `Imported ${Object.keys(changes).length} settings.`;
