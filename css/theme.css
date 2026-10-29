@@ -23,25 +23,44 @@ html.ink-theme-accent :is(#content, #right-side, .ic-DashboardCard, #breadcrumbs
 }
 
 html.ink-theme-background,
-html.ink-theme-background :is(body, #wrapper, #main, #not_right_side, #content-wrapper, #content, #left-side, #right-side-wrapper, .ic-Layout-contentMain, .ic-app-main-content, .ic-Dashboard-header__layout, .ic-app-nav-toggle-and-crumbs, .header-bar) {
+html.ink-theme-background :is(body, #wrapper, #main, #not_right_side, #content-wrapper, #content, #left-side, #right-side-wrapper, .ic-Layout-contentMain, .ic-app-main-content, .ic-Dashboard-header__layout, .ic-app-nav-toggle-and-crumbs, .ic-app-crumbs, #breadcrumbs, .header-bar) {
     background-color: var(--ink-background) !important;
 }
 
-/* the native sidebar lists fade long rows with white gradients */
-html.ink-theme-background #right-side :is(*, *::before, *::after) {
+/* the native sidebar lists fade long rows with white gradients. pseudo elements can't go inside :is() */
+html.ink-theme-background #right-side * {
     background-image: none !important;
+}
+
+html.ink-theme-background #right-side *::before,
+html.ink-theme-background #right-side *::after {
+    background: none !important;
 }
 
 html.ink-theme-background #right-side :is(.Sidebar__TodoListContainer, .events_list) :is(div, li, ul, span, a) {
     background-color: transparent !important;
 }
 
-html.ink-theme-surface :is(.ic-DashboardCard, .ic-DashboardCard__header_content, .ig-header, .ig-row, .ic-item-row, .item-group-condensed, .item-group-container, .Day-styles__root, .PlannerHeader-styles__root, .dropdown-menu, .popover, .ui-dialog, .ui-widget-content, .ui-dialog-titlebar, .ui-dialog-buttonpane, .ui-tabs-panel, .module-sequence-footer-content, .ic-notification__content, #calendar-list-holder, #undated-events, .ic-Table, table, th, td, pre, code, input, select, textarea, .ic-Input, .btn:not(.btn-primary), .Button:not(.Button--primary)) {
+html.ink-theme-surface .ic-DashboardCard__header_content {
+    background-color: var(--ink-surface) !important;
+}
+
+/* canvas gives the title area a 2px border that only shows as a focus ring */
+html.ink-theme-surface .ic-DashboardCard__link:not(:focus-visible) .ic-DashboardCard__header_content {
+    border-color: transparent !important;
+}
+
+html.ink-theme-surface :is(.ic-DashboardCard, .ig-header, .ig-row, .ic-item-row, .item-group-condensed, .item-group-container, .Day-styles__root, .PlannerHeader-styles__root, .dropdown-menu, .popover, .ui-dialog, .ui-widget-content, .ui-dialog-titlebar, .ui-dialog-buttonpane, .ui-tabs-panel, .module-sequence-footer-content, .ic-notification__content, #calendar-list-holder, #undated-events, .ic-Table, table, th, td, pre, code, input, select, textarea, .ic-Input, .btn:not(.btn-primary), .Button:not(.Button--primary)) {
     background-color: var(--ink-surface) !important;
     border-color: var(--ink-border) !important;
 }
 
 html.ink-theme-surface :is(hr, .ig-row, .ic-item-row, .item-group-condensed, #breadcrumbs, .ic-app-nav-toggle-and-crumbs) {
+    border-color: var(--ink-border) !important;
+}
+
+html.ink-theme-surface [class*="-textInput__facade"] {
+    background-color: var(--ink-surface) !important;
     border-color: var(--ink-border) !important;
 }
 
@@ -72,6 +91,11 @@ html.ink-theme-text :is(body, #wrapper, #main, #content, #right-side-wrapper, .i
 }
 
 html.ink-theme-text #nav-tray-portal [role="dialog"] :is(h1, h2, h3, h4, p, span, li, div):not(a *) {
+    color: var(--ink-text) !important;
+}
+
+/* instui components use generated classes like css-1nuqag6-formFieldLayout__label with fixed dark text */
+html.ink-theme-text :is([class*="-formFieldLayout__label"], [class*="-formFieldMessage"], [class*="-textInput__input"], [class*="-truncateText"], [class*="-heading"], [class$="-text"], [class*="-text "]) {
     color: var(--ink-text) !important;
 }
 
