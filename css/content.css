@@ -17,8 +17,8 @@
 .ink-todo .ink-task-meta { display: block; margin-top: 2px; font-size: 12px; }
 
 .ink-task { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; font-size: 13px; line-height: 1.4; }
-/* card rows hold two lines even with a short title, so cards line up */
-.ink-card .ink-task { min-height: 2.8em; }
+/* card rows hold two lines even with a short title, so cards line up. the last row has nothing below it to align */
+.ink-card .ink-task:not(:last-child) { min-height: 2.8em; }
 .ink-task-body { flex: 1; min-width: 0; }
 .ink-task-title { flex: 1; min-width: 0; color: inherit; text-decoration: none; overflow-wrap: anywhere; }
 .ink-task-title:hover { text-decoration: underline; }
@@ -34,6 +34,8 @@
 .ink-hide-sequence-footer :is(#sequence_footer, .module-sequence-footer) { display: none !important; }
 .ink-hide-recent-feedback #right-side .recent_feedback { display: none !important; }
 .ink-hide-card-icons .ic-DashboardCard__action-container { display: none !important; }
+/* the icon row normally spaces the card header from the due list */
+.ink-hide-card-icons .ink-card { margin-top: 12px; }
 .ink-hide-global-announcements :is(#announcementWrapper, .account_notification) { display: none !important; }
 .ink-hide-native-todo #right-side :is(.Sidebar__TodoListContainer, .todo-list-header, .to-do-list, .events_list.coming_up) { display: none !important; }
 
