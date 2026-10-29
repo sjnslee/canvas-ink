@@ -16,7 +16,7 @@ const classSettings = {
     "ink-hide-card-icons": "hide_card_icons",
     "ink-hide-global-announcements": "hide_global_announcements",
 };
-const themeParts = ["background", "surface", "text", "accent", "nav"];
+const themeParts = Object.keys(DEFAULTS.theme_parts);
 
 let settings = { ...DEFAULTS };
 let tasks = [];
@@ -195,7 +195,7 @@ function watchDashboard() {
 
 function needsRender() {
     const isCardMissing = settings.card_assignments && [...document.querySelectorAll(".ic-DashboardCard")].some(card => {
-        const courseId = card.querySelector(".ic-DashboardCard__link")?.href.split("/courses/")[1];
+        const courseId = cardCourseId(card);
         return courseId && !isHiddenCourse(courseId) && !card.querySelector(".ink-card");
     });
     const isTodoMissing = settings.todo && document.querySelector("#right-side") && !document.querySelector(".ink-todo");
@@ -212,11 +212,10 @@ function renderCards() {
     if (!settings.card_assignments) return;
 
     for (const card of document.querySelectorAll(".ic-DashboardCard")) {
-        const courseId = card.querySelector(".ic-DashboardCard__link")?.href.split("/courses/")[1];
+        const courseId = cardCourseId(card);
         if (!courseId || isHiddenCourse(courseId)) continue;
         const visible = tasks
-            .filter(task => task.courseId === courseId)
-            .filter(task => isDone(task) ? !isPast(task) && !settings.card_hide_done : !isPast(task) || settings.card_show_overdue)
+            .filter(task => task.courseId === courseId && (isDone(task) ? !isPast(task) && !settings.card_hide_done : !isPast(task) || settings.card_show_overdue))
             .slice(0, settings.card_count);
 
         const name = card.querySelector(".ic-DashboardCard__header-title")?.textContent.trim() || `Course ${courseId}`;
@@ -227,6 +226,10 @@ function renderCards() {
         for (const task of visible) section.append(taskRow(task, false));
         card.append(section);
     }
+}
+
+function cardCourseId(card) {
+    return card.querySelector(".ic-DashboardCard__link")?.href.split("/courses/")[1];
 }
 
 function renderTodo() {

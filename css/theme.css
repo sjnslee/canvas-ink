@@ -55,7 +55,7 @@ html.ink-theme-surface :is(.ic-DashboardCard, .ig-header, .ig-row, .ic-item-row,
     border-color: var(--ink-border) !important;
 }
 
-html.ink-theme-surface :is(hr, .ig-row, .ic-item-row, .item-group-condensed, #breadcrumbs, .ic-app-nav-toggle-and-crumbs) {
+html.ink-theme-surface :is(hr, #breadcrumbs, .ic-app-nav-toggle-and-crumbs) {
     border-color: var(--ink-border) !important;
 }
 
