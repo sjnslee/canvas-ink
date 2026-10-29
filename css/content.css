@@ -17,6 +17,8 @@
 .ink-todo .ink-task-meta { display: block; margin-top: 2px; font-size: 12px; }
 
 .ink-task { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; font-size: 13px; line-height: 1.4; }
+/* card rows hold two lines even with a short title, so cards line up */
+.ink-card .ink-task { min-height: 2.8em; }
 .ink-task-body { flex: 1; min-width: 0; }
 .ink-task-title { flex: 1; min-width: 0; color: inherit; text-decoration: none; overflow-wrap: anywhere; }
 .ink-task-title:hover { text-decoration: underline; }
