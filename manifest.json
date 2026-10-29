@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Canvas Ink",
-  "description": "A quieter Canvas: due dates on cards, a simple to do list, and your own colors and font.",
+  "description": "lightweight canvas utilities",
   "version": "0.0.1",
   "action": {
     "default_popup": "html/popup.html",
