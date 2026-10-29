@@ -1,10 +1,18 @@
 const fields = document.querySelectorAll("[data-setting]");
-const colorFields = document.querySelectorAll("[data-color]");
+const swatches = document.querySelectorAll("[data-color]");
 const partFields = document.querySelectorAll("[data-part]");
 const status = document.getElementById("status");
 const hiddenCourses = document.getElementById("hidden-courses");
 // a file picker steals focus and closes the popup, so importing happens in a tab
 const isPopup = chrome.extension.getViews({ type: "popup" }).includes(window);
+// firefox's native color picker closes the popup too, so colors use a built-in one
+const picker = document.getElementById("picker");
+const pickerArea = document.getElementById("picker-area");
+const pickerThumb = document.getElementById("picker-thumb");
+const pickerHue = document.getElementById("picker-hue");
+const pickerHex = document.getElementById("picker-hex");
+let pickerSwatch = null;
+let hsv = { h: 0, s: 0, v: 0 };
 let settings = { ...DEFAULTS };
 let colorTimer = null;
 
@@ -21,8 +29,9 @@ function fill() {
         if (field.type === "checkbox") field.checked = value === true;
         else field.value = value;
     }
-    for (const field of colorFields) field.value = settings.theme_colors[field.dataset.color];
+    for (const swatch of swatches) swatch.style.backgroundColor = settings.theme_colors[swatch.dataset.color];
     for (const field of partFields) field.checked = settings.theme_parts[field.dataset.part] === true;
+    if (pickerSwatch) syncPicker();
     fillHiddenCourses();
 }
 
@@ -61,17 +70,92 @@ for (const field of fields) {
     });
 }
 
-// input fires on every drag step; batching keeps sync under its write quota
-for (const field of colorFields) {
-    field.addEventListener("input", () => {
-        settings.theme_colors = { ...settings.theme_colors, [field.dataset.color]: field.value };
-        clearTimeout(colorTimer);
-        colorTimer = setTimeout(() => save({ theme_colors: settings.theme_colors }), 200);
-    });
-    field.addEventListener("change", () => {
-        clearTimeout(colorTimer);
-        save({ theme_colors: settings.theme_colors });
-    });
+for (const swatch of swatches) swatch.addEventListener("click", () => togglePicker(swatch));
+
+function togglePicker(swatch) {
+    picker.hidden = pickerSwatch === swatch;
+    pickerSwatch = picker.hidden ? null : swatch;
+    if (!pickerSwatch) return;
+    swatch.closest(".color").after(picker);
+    syncPicker();
+}
+
+// presets and imports change colors under an open picker
+function syncPicker() {
+    hsv = hexToHsv(settings.theme_colors[pickerSwatch.dataset.color]);
+    drawPicker();
+}
+
+function drawPicker() {
+    pickerArea.style.setProperty("--hue", hsv.h);
+    pickerThumb.style.left = `${hsv.s * 100}%`;
+    pickerThumb.style.top = `${(1 - hsv.v) * 100}%`;
+    pickerHue.value = hsv.h;
+    pickerHex.value = settings.theme_colors[pickerSwatch.dataset.color];
+}
+
+// drags update many times a second; batching keeps sync under its write quota
+function setColor(hex) {
+    settings.theme_colors = { ...settings.theme_colors, [pickerSwatch.dataset.color]: hex };
+    pickerSwatch.style.backgroundColor = hex;
+    drawPicker();
+    clearTimeout(colorTimer);
+    colorTimer = setTimeout(saveColors, 200);
+}
+
+function saveColors() {
+    clearTimeout(colorTimer);
+    save({ theme_colors: settings.theme_colors });
+}
+
+function pickAt(event) {
+    const box = pickerArea.getBoundingClientRect();
+    const clamp = n => Math.min(1, Math.max(0, n));
+    hsv.s = clamp((event.clientX - box.left) / box.width);
+    hsv.v = 1 - clamp((event.clientY - box.top) / box.height);
+    setColor(hsvToHex(hsv));
+}
+
+pickerArea.addEventListener("pointerdown", event => {
+    pickerArea.setPointerCapture(event.pointerId);
+    pickAt(event);
+});
+pickerArea.addEventListener("pointermove", event => {
+    if (pickerArea.hasPointerCapture(event.pointerId)) pickAt(event);
+});
+pickerArea.addEventListener("pointerup", saveColors);
+
+pickerHue.addEventListener("input", () => {
+    hsv.h = Number(pickerHue.value);
+    setColor(hsvToHex(hsv));
+});
+pickerHue.addEventListener("change", saveColors);
+
+pickerHex.addEventListener("change", () => {
+    const hex = pickerHex.value.trim().replace(/^#?/, "#").toLowerCase();
+    if (!/^#[0-9a-f]{6}$/.test(hex)) return drawPicker();
+    hsv = hexToHsv(hex);
+    setColor(hex);
+    saveColors();
+});
+
+function hsvToHex({ h, s, v }) {
+    const channel = n => {
+        const k = (n + h / 60) % 6;
+        return v - v * s * Math.max(0, Math.min(k, 4 - k, 1));
+    };
+    return `#${[5, 3, 1].map(n => Math.round(channel(n) * 255).toString(16).padStart(2, "0")).join("")}`;
+}
+
+function hexToHsv(hex) {
+    const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
+    const max = Math.max(r, g, b);
+    const range = max - Math.min(r, g, b);
+    let h = 0;
+    if (range && max === r) h = ((g - b) / range + 6) % 6;
+    else if (range && max === g) h = (b - r) / range + 2;
+    else if (range) h = (r - g) / range + 4;
+    return { h: h * 60, s: max ? range / max : 0, v: max };
 }
 
 for (const field of partFields) {

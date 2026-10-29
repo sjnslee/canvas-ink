@@ -72,31 +72,47 @@
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="background" /> Background</label
-        ><input
-          type="color"
-          data-color="background"
-          aria-label="Background color"
-        />
+        ><button type="button" class="swatch" data-color="background" aria-label="Background color"></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="surface" /> Panels and cards</label
-        ><input type="color" data-color="surface" aria-label="Panel color" />
+        ><button type="button" class="swatch" data-color="surface" aria-label="Panel color"></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="text" /> Text</label
-        ><input type="color" data-color="text" aria-label="Text color" />
+        ><button type="button" class="swatch" data-color="text" aria-label="Text color"></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="accent" /> Links and buttons</label
-        ><input type="color" data-color="accent" aria-label="Accent color" />
+        ><button type="button" class="swatch" data-color="accent" aria-label="Accent color"></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="nav" /> Sidebar</label
-        ><input type="color" data-color="nav" aria-label="Sidebar color" />
+        ><button type="button" class="swatch" data-color="nav" aria-label="Sidebar color"></button>
+      </div>
+      <div class="picker" id="picker" hidden>
+        <div class="picker-area" id="picker-area">
+          <span class="picker-thumb" id="picker-thumb"></span>
+        </div>
+        <input
+          type="range"
+          class="picker-hue"
+          id="picker-hue"
+          min="0"
+          max="360"
+          aria-label="Hue"
+        />
+        <input
+          type="text"
+          id="picker-hex"
+          maxlength="7"
+          spellcheck="false"
+          aria-label="Hex color"
+        />
       </div>
       <p class="hint">Unchecked parts keep Canvas colors.</p>
     </section>
