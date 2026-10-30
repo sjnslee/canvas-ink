@@ -1,115 +1,229 @@
 :root {
-    color-scheme: light dark;
-    --text: #1f1f1f;
-    --muted: #6b6b6b;
-    --line: #e2e2e2;
-    --background: #ffffff;
-    --control: #f6f6f6;
+  color-scheme: light dark;
+  --text: #1f1f1f;
+  --muted: #6b6b6b;
+  --line: #e2e2e2;
+  --background: #ffffff;
+  --control: #f6f6f6;
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --text: #e6e6e6;
-        --muted: #9a9a9a;
-        --line: #333333;
-        --background: #1c1c1c;
-        --control: #262626;
-    }
+  :root {
+    --text: #e6e6e6;
+    --muted: #9a9a9a;
+    --line: #333333;
+    --background: #1c1c1c;
+    --control: #262626;
+  }
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
-    width: 300px;
-    margin: 0;
-    background: var(--background);
-    color: var(--text);
-    font: 13px/1.4 system-ui, -apple-system, sans-serif;
+  width: 300px;
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font:
+    13px/1.4 system-ui,
+    -apple-system,
+    sans-serif;
 }
 
-body.is-page { margin: 32px auto; border: 1px solid var(--line); }
+body.is-page {
+  margin: 32px auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
 
-header { padding: 12px 14px; border-bottom: 1px solid var(--line); }
-h1 { margin: 0; font-size: 14px; font-weight: 600; }
+header {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+h1 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
 
-section { padding: 10px 14px 12px; border-bottom: 1px solid var(--line); }
-section:last-of-type { border-bottom: 0; }
-h2 { margin: 0 0 6px; font-size: 11px; font-weight: 600; color: var(--muted); }
+section {
+  padding: 10px 14px 12px;
+  border-bottom: 1px solid var(--line);
+}
+section:last-of-type {
+  border-bottom: 0;
+}
+h2 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
 
-label { display: flex; align-items: center; gap: 8px; min-height: 26px; }
-.field { justify-content: space-between; }
-.check input { margin: 0; }
+label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+}
+.field {
+  justify-content: space-between;
+}
+.check input {
+  margin: 0;
+}
 
 input[type="number"],
 input[type="text"],
 select {
-    height: 24px;
-    padding: 0 6px;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    background: var(--control);
-    color: inherit;
-    font: inherit;
+  height: 24px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--control);
+  color: inherit;
+  font: inherit;
 }
 
-input[type="number"] { width: 56px; }
-input[type="text"] { width: 160px; }
+input[type="number"] {
+  width: 56px;
+}
+input[type="text"] {
+  width: 160px;
+}
 
 button {
-    height: 24px;
-    padding: 0 10px;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    background: var(--control);
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--control);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 
-button:hover { border-color: var(--muted); }
+button:hover {
+  border-color: var(--muted);
+}
 
 /* the inset ring keeps the color off the border, like a native swatch */
-.swatch { width: 40px; height: 22px; padding: 0; box-shadow: inset 0 0 0 2px var(--background); }
+.swatch {
+  width: 40px;
+  height: 22px;
+  padding: 0;
+  box-shadow: inset 0 0 0 2px var(--background);
+}
 
-.color { display: flex; align-items: center; justify-content: space-between; }
-.picker { display: grid; gap: 8px; margin: 4px 0 8px; }
-.picker[hidden] { display: none; }
+.color {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.picker {
+  display: grid;
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+.picker[hidden] {
+  display: none;
+}
 .picker-area {
-    position: relative;
-    height: 120px;
-    border-radius: 3px;
-    background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent), hsl(var(--hue) 100% 50%);
-    cursor: crosshair;
-    touch-action: none;
+  position: relative;
+  height: 120px;
+  border-radius: 3px;
+  background:
+    linear-gradient(to top, #000, transparent),
+    linear-gradient(to right, #fff, transparent), hsl(var(--hue) 100% 50%);
+  cursor: crosshair;
+  touch-action: none;
 }
 .picker-thumb {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    margin: -5px 0 0 -5px;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px rgb(0 0 0 / 40%);
-    pointer-events: none;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 40%);
+  pointer-events: none;
 }
 .picker-hue {
-    width: 100%;
-    height: 12px;
-    margin: 0;
-    appearance: none;
-    border-radius: 3px;
-    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  width: 100%;
+  height: 12px;
+  margin: 0;
+  appearance: none;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    #f00,
+    #ff0,
+    #0f0,
+    #0ff,
+    #00f,
+    #f0f,
+    #f00
+  );
 }
-.picker-hue::-moz-range-track { background: transparent; }
+.picker-hue::-moz-range-track {
+  background: transparent;
+}
 /* vendor thumbs can't share a rule, since one unknown selector drops the whole list */
-.picker-hue::-moz-range-thumb { width: 6px; height: 14px; border: 1px solid rgb(0 0 0 / 40%); border-radius: 2px; background: #fff; }
-.picker-hue::-webkit-slider-thumb { width: 6px; height: 14px; border: 1px solid rgb(0 0 0 / 40%); border-radius: 2px; background: #fff; appearance: none; }
-#picker-hex { width: 80px; }
-.presets { display: flex; align-items: center; gap: 6px; min-height: 30px; }
-.presets span { margin-right: auto; }
-.actions { display: flex; gap: 6px; }
-#hidden-courses { margin: 0; padding: 0; list-style: none; }
-#hidden-courses li { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px; }
-#hidden-courses span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.hint { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
-.hint:empty { display: none; }
+.picker-hue::-moz-range-thumb {
+  width: 6px;
+  height: 14px;
+  border: 1px solid rgb(0 0 0 / 40%);
+  border-radius: 2px;
+  background: #fff;
+}
+.picker-hue::-webkit-slider-thumb {
+  width: 6px;
+  height: 14px;
+  border: 1px solid rgb(0 0 0 / 40%);
+  border-radius: 2px;
+  background: #fff;
+  appearance: none;
+}
+#picker-hex {
+  width: 80px;
+}
+.presets {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+}
+.presets span {
+  margin-right: auto;
+}
+.actions {
+  display: flex;
+  gap: 6px;
+}
+#hidden-courses {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#hidden-courses li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 28px;
+}
+#hidden-courses span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hint {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.hint:empty {
+  display: none;
+}
