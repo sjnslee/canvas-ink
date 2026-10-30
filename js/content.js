@@ -20,6 +20,8 @@ const themeParts = Object.keys(DEFAULTS.theme_parts);
 
 let settings = { ...DEFAULTS };
 let tasks = [];
+// each entry is a task's done state before a click, newest last
+let undoStack = [];
 
 init();
 
@@ -44,6 +46,7 @@ async function init() {
     chrome.storage.onChanged.addListener(handleStorageChange);
     if (!isDashboard) return;
     watchDashboard();
+    watchUndo();
     loadTasks();
 }
 
@@ -51,7 +54,9 @@ function handleStorageChange(changes, area) {
     if (area !== "sync") return;
     for (const [key, change] of Object.entries(changes)) settings[key] = change.newValue ?? DEFAULTS[key];
     applyStyles();
-    if (isDashboard) render();
+    if (!isDashboard) return;
+    watchUndo();
+    render();
 }
 
 function applyStyles() {
@@ -177,6 +182,28 @@ async function setDone(task, done) {
     render();
 }
 
+// the listener only exists while the option is on, so keystrokes cost nothing by default
+function watchUndo() {
+    document.removeEventListener("keydown", handleUndo);
+    if (!settings.undo_shortcut) {
+        undoStack = [];
+        return;
+    }
+    document.addEventListener("keydown", handleUndo);
+}
+
+function handleUndo(event) {
+    if (event.key.toLowerCase() !== "z" || !(event.ctrlKey || event.metaKey) || event.shiftKey || event.altKey) return;
+    // text fields keep their own undo
+    if (event.target.isContentEditable || event.target.matches?.("input:not([type=checkbox]), textarea, select")) return;
+    const last = undoStack.pop();
+    // tasks are refetched on load, so match by id rather than object
+    const task = last && tasks.find(task => task.id === last.id && task.type === last.type);
+    if (!task) return;
+    event.preventDefault();
+    setDone(task, last.done);
+}
+
 function csrfToken() {
     return decodeURIComponent(document.cookie.match(/(?:^|;\s*)_csrf_token=([^;]*)/)?.[1] ?? "");
 }
@@ -251,7 +278,10 @@ function taskRow(task, isDetailed) {
     row.classList.toggle("is-overdue", !done && isPast(task));
 
     const check = el("input", { type: "checkbox", className: "ink-check", checked: done, title: done ? "Mark not done" : "Mark done" });
-    check.addEventListener("change", () => setDone(task, check.checked));
+    check.addEventListener("change", () => {
+        if (settings.undo_shortcut) undoStack.push({ id: task.id, type: task.type, done });
+        setDone(task, check.checked);
+    });
 
     const title = el("a", { className: "ink-task-title", href: task.url, textContent: task.title });
     const meta = el("span", { className: "ink-task-meta", textContent: formatDue(task, isDetailed) });

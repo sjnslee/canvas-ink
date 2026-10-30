@@ -37,6 +37,10 @@
         ><input type="checkbox" data-setting="todo" /> Show to do list on
         dashboard</label
       >
+      <label class="check"
+        ><input type="checkbox" data-setting="undo_shortcut" /> Ctrl+Z to undo
+        action
+      </label>
       <label class="field"
         >Max items
         <input type="number" data-setting="todo_count" min="1" max="50"
@@ -72,27 +76,52 @@
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="background" /> Background</label
-        ><button type="button" class="swatch" data-color="background" aria-label="Background color"></button>
+        ><button
+          type="button"
+          class="swatch"
+          data-color="background"
+          aria-label="Background color"
+        ></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="surface" /> Panels and cards</label
-        ><button type="button" class="swatch" data-color="surface" aria-label="Panel color"></button>
+        ><button
+          type="button"
+          class="swatch"
+          data-color="surface"
+          aria-label="Panel color"
+        ></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="text" /> Text</label
-        ><button type="button" class="swatch" data-color="text" aria-label="Text color"></button>
+        ><button
+          type="button"
+          class="swatch"
+          data-color="text"
+          aria-label="Text color"
+        ></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="accent" /> Links and buttons</label
-        ><button type="button" class="swatch" data-color="accent" aria-label="Accent color"></button>
+        ><button
+          type="button"
+          class="swatch"
+          data-color="accent"
+          aria-label="Accent color"
+        ></button>
       </div>
       <div class="color">
         <label class="check"
           ><input type="checkbox" data-part="nav" /> Sidebar</label
-        ><button type="button" class="swatch" data-color="nav" aria-label="Sidebar color"></button>
+        ><button
+          type="button"
+          class="swatch"
+          data-color="nav"
+          aria-label="Sidebar color"
+        ></button>
       </div>
       <div class="picker" id="picker" hidden>
         <div class="picker-area" id="picker-area">
@@ -114,7 +143,6 @@
           aria-label="Hex color"
         />
       </div>
-      <p class="hint">Unchecked parts keep Canvas colors.</p>
     </section>
 
     <section>
@@ -127,11 +155,11 @@
           placeholder="Canvas default"
           spellcheck="false"
       /></label>
-      <p class="hint">Any family from Google Fonts, like Inter or Lora.</p>
+      <p class="hint">Imported from Google Fonts</p>
     </section>
 
     <section>
-      <h2>Hide</h2>
+      <h2>Hide Items</h2>
       <label class="check"
         ><input type="checkbox" data-setting="hide_logo" /> Sidebar logo</label
       >
@@ -148,8 +176,7 @@
       >
       <label class="check"
         ><input type="checkbox" data-setting="hide_native_todo" /> Canvas to do
-        and coming up</label
-      >
+      </label>
       <label class="check"
         ><input type="checkbox" data-setting="hide_recent_feedback" /> Recent
         feedback</label
