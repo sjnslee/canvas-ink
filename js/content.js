@@ -3,6 +3,7 @@ const isDashboard = window.location.pathname === "/";
 const plannerKey = `planner:${origin}`;
 const taskTypes = ["assignment", "quiz", "discussion_topic"];
 const day = 86400000;
+const recentDoneCount = 3;
 // firefox sends content script requests as the extension; content.fetch sends them as the page
 const pageFetch = globalThis.content?.fetch ? (...args) => globalThis.content.fetch(...args) : fetch;
 
@@ -268,6 +269,15 @@ function renderTodo() {
     const section = el("section", { className: "ink-todo" }, [el("h2", { className: "ink-todo-heading", textContent: "To do" })]);
     if (visible.length === 0) section.append(el("p", { className: "ink-empty", textContent: "All caught up" }));
     for (const task of visible) section.append(taskRow(task, true));
+    if (settings.todo_recent_done) {
+        // done tasks due by end of today, latest first
+        const endOfToday = new Date().setHours(24, 0, 0, 0);
+        const done = tasks
+            .filter(task => isDone(task) && !isHiddenCourse(task.courseId) && new Date(task.due) < endOfToday)
+            .reverse()
+            .slice(0, recentDoneCount);
+        for (const task of done) section.append(taskRow(task, true));
+    }
     sidebar.prepend(section);
 }
 

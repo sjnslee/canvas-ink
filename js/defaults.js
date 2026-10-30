@@ -11,6 +11,7 @@ const DEFAULTS = {
     card_hide_done: false,
     todo: true,
     todo_count: 8,
+    todo_recent_done: false,
     undo_shortcut: false,
     date_format: "md",
     relative_dates: false,
