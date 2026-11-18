@@ -91,7 +91,7 @@ function applyFont(font) {
     current?.remove();
     if (!font) return;
     root.style.setProperty("--ink-font", `"${font.replace(/"/g, "")}"`);
-    const link = el("link", { id: "ink-font", rel: "stylesheet", href: `https://fonts.googleapis.com/css2?family=${encodeURIComponent(font).replace(/%20/g, "+")}&display=swap` });
+    const link = el("link", { id: "ink-font", rel: "stylesheet", referrerPolicy: "no-referrer", href: `https://fonts.googleapis.com/css2?family=${encodeURIComponent(font).replace(/%20/g, "+")}&display=swap` });
     link.dataset.font = font;
     (document.head || root).append(link);
 }
