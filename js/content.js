@@ -168,6 +168,7 @@ function isPast(task) {
 // marks are stored as canvas planner overrides, so they show up in canvas too
 async function setDone(task, done) {
     const previous = { overrideId: task.overrideId, isMarkedDone: task.isMarkedDone };
+    let isSaved = true;
     task.isMarkedDone = done;
     render();
     try {
@@ -181,9 +182,11 @@ async function setDone(task, done) {
     } catch (error) {
         console.warn("canvas ink: could not save done state", error);
         Object.assign(task, previous);
+        isSaved = false;
     }
     saveTasks();
     render();
+    return isSaved;
 }
 
 // the listener only exists while the option is on, so keystrokes cost nothing by default
@@ -291,9 +294,9 @@ function taskRow(task, isDetailed) {
     row.classList.toggle("is-overdue", !done && isPast(task));
 
     const check = el("input", { type: "checkbox", className: "ink-check", checked: done, title: done ? "Mark not done" : "Mark done" });
-    check.addEventListener("change", () => {
-        if (settings.undo_shortcut) undoStack.push({ id: task.id, type: task.type, done });
-        setDone(task, check.checked);
+    check.addEventListener("change", async () => {
+        const isSaved = await setDone(task, check.checked);
+        if (isSaved && settings.undo_shortcut) undoStack.push({ id: task.id, type: task.type, done });
     });
 
     const title = el("a", { className: "ink-task-title", href: task.url, textContent: task.title });
