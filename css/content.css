@@ -30,6 +30,7 @@
 
 .ink-hide-logo .ic-app-header__logomark-container { display: none !important; }
 .ink-hide-course-images .ic-DashboardCard__header_image { background-image: none !important; }
+.ink-hide-course-images .ic-DashboardCard__header_hero { opacity: 1 !important; }
 .ink-hide-footer #footer { display: none !important; }
 .ink-hide-sequence-footer :is(#sequence_footer, .module-sequence-footer) { display: none !important; }
 .ink-hide-recent-feedback #right-side .recent_feedback { display: none !important; }
